@@ -62,3 +62,8 @@ jobs:
         run: |
           gcloud container clusters get-credentials ${{ env.cluster_name }} \
             --zone ${{ env.zone }} \
+            --project ${{ env.project_id }}
+
+      - name: Apply Network Policy 
+        run: |
+          kubectl apply -f k8s/network-policy.yaml
