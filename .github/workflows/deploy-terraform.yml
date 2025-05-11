@@ -58,6 +58,6 @@ jobs:
             --zone ${{ env.zone }} \
             --project ${{ env.project_id }}
 
-      - name: Apply Network Policy
+      - name: Apply Network Policy 
         run: |
           kubectl apply -f kubernetes/k8s/network-policy.yaml
