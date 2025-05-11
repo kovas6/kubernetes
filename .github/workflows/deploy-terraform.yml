@@ -1,43 +1,39 @@
-name: Deploy GKE with Terraform
+name: Deploy Terraform
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   terraform:
+    name: 'Terraform Apply'
     runs-on: ubuntu-latest
 
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-key.json
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS_JSON }}'
+      - name: Write GCP credentials to file
+        run: echo '${{ secrets.GCP_CREDENTIALS_JSON }}' > $GOOGLE_APPLICATION_CREDENTIALS
 
-      - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          install_components: "gke-gcloud-auth-plugin"
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.0
+          terraform_version: 1.6.6
 
       - name: Terraform Init
-        run: terraform init -reconfigure
-
-      - name: Terraform Validate
-        run: terraform validate
+        working-directory: terraform/dev
+        run: terraform init
 
       - name: Terraform Plan
+        working-directory: terraform/dev
         run: terraform plan
 
       - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        working-directory: terraform/dev
         run: terraform apply -auto-approve
