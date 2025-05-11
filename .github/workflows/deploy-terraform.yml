@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   terraform:
-    name: 'Terraform Apply'
+    name: 'Terraform Apply and Kubernetes Setup'
     runs-on: ubuntu-latest
 
     env:
@@ -37,3 +38,29 @@ jobs:
         if: github.ref == 'refs/heads/main'
         working-directory: terraform/dev
         run: terraform apply -auto-approve
+
+      - name: Extract Terraform Outputs
+        id: tf_outputs
+        working-directory: terraform/dev
+        run: |
+          echo "project_id=$(terraform output -raw project_id)" >> $GITHUB_ENV
+          echo "cluster_name=$(terraform output -raw cluster_name)" >> $GITHUB_ENV
+          echo "region=$(terraform output -raw region)" >> $GITHUB_ENV
+
+      - name: Install gcloud CLI
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: 'latest'
+
+      - name: Authenticate gcloud
+        run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+
+      - name: Get GKE Credentials
+        run: |
+          gcloud container clusters get-credentials ${{ env.cluster_name }} \
+            --region ${{ env.region }} \
+            --project ${{ env.project_id }}
+
+      - name: Apply Network Policy
+        run: |
+          kubectl apply -f k8s/network/network-policy.yaml
