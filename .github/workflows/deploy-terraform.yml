@@ -1,10 +1,9 @@
-name: Deploy Terraform
+name: Deploy Terraform and Kubernetes Setup
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   terraform:
@@ -21,7 +20,7 @@ jobs:
       - name: Write GCP credentials to file
         run: echo '${{ secrets.GCP_CREDENTIALS_JSON }}' > $GOOGLE_APPLICATION_CREDENTIALS
 
-      - name: Setup Terraform
+      - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.6.6
@@ -35,7 +34,6 @@ jobs:
         run: terraform plan
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
         working-directory: terraform/dev
         run: terraform apply -auto-approve
 
@@ -46,11 +44,10 @@ jobs:
           echo "project_id=$(terraform output -raw project_id)" >> $GITHUB_ENV
           echo "cluster_name=$(terraform output -raw cluster_name)" >> $GITHUB_ENV
           echo "region=$(terraform output -raw region)" >> $GITHUB_ENV
+          echo "zone=$(terraform output -raw zone)" >> $GITHUB_ENV
 
-      - name: Install gcloud CLI
+      - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v1
-        with:
-          version: 'latest'
 
       - name: Authenticate gcloud
         run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
@@ -58,9 +55,9 @@ jobs:
       - name: Get GKE Credentials
         run: |
           gcloud container clusters get-credentials ${{ env.cluster_name }} \
-            --region ${{ env.region }} \
+            --zone ${{ env.zone }} \
             --project ${{ env.project_id }}
 
-      - name: Apply Network Policy
-        run: |
-          kubectl apply -f k8s/network/network-policy.yaml
+      # You can add kubectl steps here, like applying network policies, etc.
+      # - name: Apply network policy
+      #   run: kubectl apply -f kubernetes/network/network-policy.yaml
