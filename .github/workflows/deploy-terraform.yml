@@ -60,4 +60,4 @@ jobs:
 
       - name: Apply Network Policy
         run: |
-          kubectl apply -f kubernetes/network/network-policy.yaml
+          kubectl apply -f kubernetes/k8s/network-policy.yaml
