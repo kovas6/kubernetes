@@ -58,6 +58,6 @@ jobs:
             --zone ${{ env.zone }} \
             --project ${{ env.project_id }}
 
-      # You can add kubectl steps here, like applying network policies, etc.
-      # - name: Apply network policy
-      #   run: kubectl apply -f kubernetes/network/network-policy.yaml
+      - name: Apply Network Policy
+        run: |
+          kubectl apply -f kubernetes/network/network-policy.yaml
