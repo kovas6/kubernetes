@@ -12,6 +12,8 @@ jobs:
 
     env:
       GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-key.json
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
     steps:
       - name: Checkout code
@@ -67,3 +69,19 @@ jobs:
       - name: Apply Network Policy
         run: |
           kubectl apply -f k8s/network-policy.yaml
+
+      - name: Terraform Init (Postgres Module)
+        run: terraform init
+        working-directory: terraform/modules/postgres
+
+      - name: Terraform Apply (Postgres Module)
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        run: terraform apply -auto-approve
+        working-directory: terraform/modules/postgres
+
+      - name: Verify PostgreSQL Deployment
+        run: |
+          kubectl get pods -l app=postgres
+          kubectl get svc postgres
