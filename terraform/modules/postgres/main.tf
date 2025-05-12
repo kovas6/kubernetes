@@ -1,6 +1,9 @@
-locals {
-  postgres_username = getenv("POSTGRES_USER")
-  postgres_password = getenv("POSTGRES_PASSWORD")
+variable "postgres_username" {
+  type = string
+}
+
+variable "postgres_password" {
+  type = string
 }
 
 resource "kubernetes_secret" "postgres" {
@@ -9,8 +12,8 @@ resource "kubernetes_secret" "postgres" {
   }
 
   data = {
-    username = base64encode(local.postgres_username)
-    password = base64encode(local.postgres_password)
+    username = base64encode(var.postgres_username)
+    password = base64encode(var.postgres_password)
   }
 
   type = "Opaque"

@@ -12,8 +12,6 @@ jobs:
 
     env:
       GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-key.json
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
     steps:
       - name: Checkout code
@@ -76,6 +74,9 @@ jobs:
 
       - name: Terraform Apply (Postgres Module)
         run: terraform apply -auto-approve
+        env:
+          TF_VAR_postgres_username: ${{ secrets.POSTGRES_USER }}
+          TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
         working-directory: terraform/modules/postgres
 
       - name: Verify PostgreSQL Deployment
