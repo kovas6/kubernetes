@@ -75,9 +75,6 @@ jobs:
         working-directory: terraform/modules/postgres
 
       - name: Terraform Apply (Postgres Module)
-        env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: terraform apply -auto-approve
         working-directory: terraform/modules/postgres
 
@@ -85,3 +82,5 @@ jobs:
         run: |
           kubectl get pods -l app=postgres
           kubectl get svc postgres
+
+          
