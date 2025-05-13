@@ -73,7 +73,7 @@ jobs:
         working-directory: terraform/modules/postgres
 
       - name: Terraform Apply (Postgres Module)
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -refresh=false
         env:
           TF_VAR_postgres_username: ${{ secrets.POSTGRES_USER }}
           TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
