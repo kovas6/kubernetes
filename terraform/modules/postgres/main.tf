@@ -29,7 +29,7 @@ resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
 
     resources {
       requests = {
-        storage = "20Gi"
+        storage = "2Gi"
       }
     }
 
