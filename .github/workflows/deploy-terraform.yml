@@ -79,7 +79,7 @@ jobs:
           TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
         working-directory: terraform/modules/postgres
 
-      - name: Verify PostgreSQL Deployment 
+      - name: Verify PostgreSQL Deployment
         run: |
           kubectl get pods -l app=postgres
           kubectl get svc postgres
