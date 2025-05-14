@@ -137,8 +137,4 @@ resource "kubernetes_service" "postgres" {
 
     type = "ClusterIP"
   }
-  
-  lifecycle {
-    ignore_changes = [metadata]
-  }
 }
