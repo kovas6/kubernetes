@@ -9,6 +9,27 @@ variable "postgres_password" {
 provider "kubernetes" {
   config_path = "~/.kube/config"
 }
+
+# Dummy Kubernetes Pod resource
+resource "kubernetes_pod" "dummy_pod" {
+  metadata {
+    name = "dummy-pod"
+    labels = {
+      app = "dummy-app"
+    }
+  }
+
+  spec {
+    container {
+      name  = "dummy-container"
+      image = "nginx:latest"
+      port {
+        container_port = 80
+      }
+    }
+  }
+}
+
 /* 
 resource "kubernetes_secret" "postgres" {
   metadata {
@@ -119,7 +140,7 @@ resource "kubernetes_deployment" "postgres" {
   }
 }
 */
- 
+/* 
 resource "kubernetes_service" "postgres" {
   metadata {
     name = "postgres"
@@ -139,3 +160,4 @@ resource "kubernetes_service" "postgres" {
     type = "ClusterIP"
   }
 }
+*/
