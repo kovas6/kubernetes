@@ -30,6 +30,6 @@ resource "google_container_node_pool" "primary_nodes" {
 }
 
 module "postgres" {
-  source = "./terraform/modules/postgres"
+  source = "./modules/postgres"
 }
 
