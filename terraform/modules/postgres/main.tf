@@ -6,10 +6,6 @@ variable "postgres_password" {
   type = string
 }
 
-provider "kubernetes" {
-  config_path = "~/.kube/config"
-}
-
 resource "kubernetes_namespace" "postgres" {
   metadata {
     name = "postgres"
