@@ -68,6 +68,12 @@ jobs:
         run: |
           kubectl apply -f k8s/network-policy.yaml
 
+      - name: Import existing resources
+        run: |
+          terraform import kubernetes_secret.postgres default/postgres-secret
+          terraform import kubernetes_persistent_volume_claim.postgres_pvc default/postgres-pvc
+          terraform import kubernetes_service.postgres default/postgres
+    
       - name: Terraform Init (Postgres Module)
         run: terraform init
         working-directory: terraform/modules/postgres
