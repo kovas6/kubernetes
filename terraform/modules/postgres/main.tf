@@ -6,6 +6,10 @@ variable "postgres_password" {
   type = string
 }
 
+provider "kubernetes" {
+  config_path = "C:/Users/Vartotojas/.kube/config"
+}
+
 resource "kubernetes_secret" "postgres" {
   metadata {
     name = "postgres-secret"
@@ -33,7 +37,7 @@ resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
       }
     }
 
-    storage_class_name = "premium-rwo"
+    storage_class_name = "premium-rwo-immediate"
   }
 }
 
