@@ -127,7 +127,8 @@ resource "kubernetes_service" "postgres" {
 
   spec {
     selector = {
-      app = "postgres"
+      dummy = "true"
+      #app = "postgres"
     }
 
     port {
