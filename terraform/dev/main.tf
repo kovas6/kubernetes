@@ -28,3 +28,8 @@ resource "google_container_node_pool" "primary_nodes" {
     preemptible  = var.preemptible
   }
 }
+
+module "postgres" {
+  source = "./modules/postgres"
+}
+
