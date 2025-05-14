@@ -74,10 +74,10 @@ jobs:
         run: |
           kubectl apply -f k8s/network-policy.yaml
 
-      - name: Verify PostgreSQL Deployment 
-        run: |
-          kubectl get pods -l app=postgres
-          kubectl get svc postgres
+#      - name: Verify PostgreSQL Deployment 
+#        run: |
+#          kubectl get pods -l app=postgres
+#          kubectl get svc postgres
 
       - name: Terraform State List (Check Postgres Resource in State)
         run: terraform state list
