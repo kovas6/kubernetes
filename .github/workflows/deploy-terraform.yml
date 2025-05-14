@@ -74,7 +74,7 @@ jobs:
         run: |
           kubectl apply -f k8s/network-policy.yaml
 
-#      - name: Verify PostgreSQL Deployment 
+#      - name: Verify PostgreSQL Deployment  
 #        run: |
 #          kubectl get pods -l app=postgres
 #          kubectl get svc postgres
