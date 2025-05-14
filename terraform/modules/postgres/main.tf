@@ -10,27 +10,12 @@ provider "kubernetes" {
   config_path = "~/.kube/config"
 }
 
-# Dummy Kubernetes Pod resource
-resource "kubernetes_pod" "dummy_pod" {
+resource "kubernetes_namespace" "postgres" {
   metadata {
-    name = "dummy-pod"
-    labels = {
-      app = "dummy-app"
-    }
-  }
-
-  spec {
-    container {
-      name  = "dummy-container"
-      image = "nginx:latest"
-      port {
-        container_port = 80
-      }
-    }
+    name = "postgres"
   }
 }
 
-/* 
 resource "kubernetes_secret" "postgres" {
   metadata {
     name = "postgres-secret"
@@ -43,7 +28,7 @@ resource "kubernetes_secret" "postgres" {
 
   type = "Opaque"
 }
-*/
+
 /* 
 resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
   metadata {
