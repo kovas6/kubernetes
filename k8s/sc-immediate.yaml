@@ -1,0 +1,8 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: premium-rwo-immediate
+provisioner: pd.csi.storage.gke.io
+volumeBindingMode: Immediate
+reclaimPolicy: Delete
+allowVolumeExpansion: true
