@@ -25,10 +25,6 @@ jobs:
         with:
           terraform_version: 1.6.6
 
-      - name: Terraform State List (Check Postgres Resource in State)
-        run: terraform state list
-        working-directory: terraform/dev
-
       - name: Terraform Init
         working-directory: terraform/dev
         run: terraform init
