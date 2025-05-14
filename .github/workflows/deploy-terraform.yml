@@ -73,8 +73,8 @@ jobs:
           terraform import kubernetes_secret.postgres default/postgres-secret
           terraform import kubernetes_persistent_volume_claim.postgres_pvc default/postgres-pvc
           terraform import kubernetes_service.postgres default/postgres
-        working-directory: ./terraform
-        
+        working-directory: terraform/modules/postgres
+
       - name: Terraform Init (Postgres Module)
         run: terraform init
         working-directory: terraform/modules/postgres
