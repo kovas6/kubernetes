@@ -25,6 +25,10 @@ jobs:
         with:
           terraform_version: 1.6.6
 
+      - name: Terraform State List (Check Postgres Resource in State)
+        run: terraform state list
+        working-directory: terraform/dev
+
       - name: Terraform Init
         working-directory: terraform/dev
         run: terraform init
@@ -32,10 +36,16 @@ jobs:
       - name: Terraform Plan
         working-directory: terraform/dev
         run: terraform plan
+        env:
+          TF_VAR_postgres_username: ${{ secrets.POSTGRES_USER }}
+          TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
 
       - name: Terraform Apply
         working-directory: terraform/dev
         run: terraform apply -auto-approve
+        env:
+          TF_VAR_postgres_username: ${{ secrets.POSTGRES_USER }}
+          TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
 
       - name: Extract Terraform Outputs
         id: tf_outputs
@@ -68,20 +78,11 @@ jobs:
         run: |
           kubectl apply -f k8s/network-policy.yaml
 
-      - name: Terraform Init (Postgres Module)
-        run: terraform init
-        working-directory: terraform/modules/postgres
-
-      - name: Terraform Apply (Postgres Module)
-        run: terraform apply -auto-approve -parallelism=1
-        env:
-          TF_VAR_postgres_username: ${{ secrets.POSTGRES_USER }}
-          TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
-        working-directory: terraform/modules/postgres
-
-      - name: Verify PostgreSQL Deployment
+      - name: Verify PostgreSQL Deployment 
         run: |
           kubectl get pods -l app=postgres
           kubectl get svc postgres
 
-          
+      - name: Terraform State List (Check Postgres Resource in State)
+        run: terraform state list
+        working-directory: terraform/dev
