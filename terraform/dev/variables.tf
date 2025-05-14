@@ -38,3 +38,14 @@ variable "preemptible" {
   default     = false
   description = "Whether nodes should be preemptible"
 }
+
+variable "postgres_username" {
+  description = "Username for PostgreSQL"
+  type        = string
+}
+
+variable "postgres_password" {
+  description = "Password for PostgreSQL"
+  type        = string
+  sensitive   = true
+}
