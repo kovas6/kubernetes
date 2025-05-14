@@ -7,7 +7,7 @@ variable "postgres_password" {
 }
 
 provider "kubernetes" {
-  config_path = "C:/Users/Vartotojas/.kube/config"
+  config_path = "~/.kube/config"
 }
 
 resource "kubernetes_secret" "postgres" {
