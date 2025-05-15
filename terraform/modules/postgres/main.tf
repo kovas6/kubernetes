@@ -149,3 +149,4 @@ resource "kubernetes_service" "postgres" {
     type = "ClusterIP"
   }
 }
+#
