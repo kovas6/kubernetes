@@ -25,7 +25,7 @@ resource "kubernetes_secret" "postgres" {
   type = "Opaque"
 }
 
-/* 
+
 resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
   metadata {
     name = "postgres-pvc"
@@ -43,7 +43,7 @@ resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
     storage_class_name = "premium-rwo-immediate"
   }
 }
-*/
+
 /*
 resource "kubernetes_deployment" "postgres" {
   metadata {
@@ -121,7 +121,7 @@ resource "kubernetes_deployment" "postgres" {
   }
 }
 */
-/* 
+
 resource "kubernetes_service" "postgres" {
   metadata {
     name = "postgres"
@@ -129,8 +129,7 @@ resource "kubernetes_service" "postgres" {
 
   spec {
     selector = {
-      dummy = "true"
-      #app = "postgres"
+      app = "postgres"
     }
 
     port {
@@ -141,4 +140,3 @@ resource "kubernetes_service" "postgres" {
     type = "ClusterIP"
   }
 }
-*/
