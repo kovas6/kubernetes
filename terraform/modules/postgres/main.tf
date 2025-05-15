@@ -17,14 +17,14 @@ resource "kubernetes_namespace" "postgres" {
   }
 }
 
-resource "terraform_data" "postgres_credentials" {
-  input = "${var.postgres_username}:${var.postgres_password}"
+resource "terraform_data" "postgres_credentials_hash" {
+  input = sha256("${var.postgres_username}:${var.postgres_password}")
 }
 
 # Secret
 resource "kubernetes_secret" "postgres" {
   metadata {
-    name = "postgres-secret"
+    name      = "postgres-secret"
     namespace = kubernetes_namespace.postgres.metadata[0].name
   }
 
@@ -37,7 +37,7 @@ resource "kubernetes_secret" "postgres" {
 
   lifecycle {
     replace_triggered_by = [
-      terraform_data.postgres_credentials
+      terraform_data.postgres_credentials_hash
     ]
   }
 }

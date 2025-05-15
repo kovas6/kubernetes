@@ -26,6 +26,11 @@ jobs:
         with:
           terraform_version: 1.6.6
 
+      - name: Set Terraform variables from GitHub Secrets
+        run: |
+          echo "TF_VAR_postgres_username=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
+          echo "TF_VAR_postgres_password=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
+
       - name: Terraform Init
         working-directory: terraform/dev
         run: terraform init
@@ -33,16 +38,10 @@ jobs:
       - name: Terraform Plan
         working-directory: terraform/dev
         run: terraform plan
-        env:
-          TF_VAR_postgres_username: ${{ secrets.POSTGRES_USER }}
-          TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
 
       - name: Terraform Apply
         working-directory: terraform/dev
         run: terraform apply -auto-approve
-        env:
-          TF_VAR_postgres_username: ${{ secrets.POSTGRES_USER }}
-          TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
 
       - name: Extract Terraform Outputs
         id: tf_outputs
