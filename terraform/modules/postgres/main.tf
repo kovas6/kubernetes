@@ -17,6 +17,10 @@ resource "kubernetes_namespace" "postgres" {
   }
 }
 
+resource "terraform_data" "postgres_credentials" {
+  input = "${var.postgres_username}:${var.postgres_password}"
+}
+
 # Secret
 resource "kubernetes_secret" "postgres" {
   metadata {
@@ -30,6 +34,12 @@ resource "kubernetes_secret" "postgres" {
   }
 
   type = "Opaque"
+
+  lifecycle {
+    replace_triggered_by = [
+      terraform_data.postgres_credentials
+    ]
+  }
 }
 
 # Storage Class
