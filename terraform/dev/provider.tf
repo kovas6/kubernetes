@@ -17,7 +17,7 @@ provider "kubernetes" {
 
 /*
 provider "kubernetes" { 
-  config_path = "~/.kube/config"
+  config_path = "~/.kube/config" 
 }
 */
 data "google_client_config" "default" {}
