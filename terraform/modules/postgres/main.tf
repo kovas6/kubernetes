@@ -25,6 +25,17 @@ resource "kubernetes_secret" "postgres" {
   type = "Opaque"
 }
 
+resource "kubernetes_storage_class" "premium_rwo_immediate" {
+  metadata {
+    name = "premium-rwo-immediate"
+  }
+
+  storage_provisioner = "pd.csi.storage.gke.io"
+
+  reclaim_policy        = "Delete"
+  volume_binding_mode   = "Immediate"
+  allow_volume_expansion = true
+}
 
 resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
   metadata {
