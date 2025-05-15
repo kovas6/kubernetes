@@ -55,7 +55,6 @@ resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
   }
 }
 
-/*
 resource "kubernetes_deployment" "postgres" {
   metadata {
     name = "postgres"
@@ -131,7 +130,6 @@ resource "kubernetes_deployment" "postgres" {
     }
   }
 }
-*/
 
 resource "kubernetes_service" "postgres" {
   metadata {
