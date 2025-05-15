@@ -1,61 +1,4 @@
-variable "postgres_username" {
-  type = string
-}
-
-variable "postgres_password" {
-  type = string
-}
-
-resource "kubernetes_namespace" "postgres" {
-  metadata {
-    name = "postgres"
-  }
-}
-
-resource "kubernetes_secret" "postgres" {
-  metadata {
-    name = "postgres-secret"
-  }
-
-  data = {
-    username = base64encode(var.postgres_username)
-    password = base64encode(var.postgres_password)
-  }
-
-  type = "Opaque"
-}
-
-resource "kubernetes_storage_class" "premium_rwo_immediate" {
-  metadata {
-    name = "premium-rwo-immediate"
-  }
-
-  storage_provisioner = "pd.csi.storage.gke.io"
-
-  reclaim_policy        = "Delete"
-  volume_binding_mode   = "Immediate"
-  allow_volume_expansion = true
-}
-
-resource "kubernetes_persistent_volume_claim" "postgres_pvc" {
-  metadata {
-    name = "postgres-pvc"
-  }
-
-  spec {
-    access_modes = ["ReadWriteOnce"]
-
-    resources {
-      requests = {
-        storage = "2Gi"
-      }
-    }
-
-    storage_class_name = "premium-rwo-immediate"
-  }
-}
-
-resource "kubernetes_deployment" "postgres" {
+resource "kubernetes_stateful_set" "postgres" {
   metadata {
     name = "postgres"
     labels = {
@@ -64,7 +7,8 @@ resource "kubernetes_deployment" "postgres" {
   }
 
   spec {
-    replicas = 1
+    service_name = "postgres"      
+    replicas     = 1             
 
     selector {
       match_labels = {
@@ -129,6 +73,25 @@ resource "kubernetes_deployment" "postgres" {
         }
       }
     }
+
+    # volume_claim_template is preferred for StatefulSet dynamic PVCs, but keeping PVC as is
+    # volume_claim_template {
+    #   metadata {
+    #     name = "postgres-storage"
+    #   }
+    #
+    #   spec {
+    #     access_modes = ["ReadWriteOnce"]
+    #
+    #     resources {
+    #       requests = {
+    #         storage = "2Gi"
+    #       }
+    #     }
+    #
+    #     storage_class_name = "premium-rwo-immediate"
+    #   }
+    # }
   }
 }
 
@@ -138,6 +101,7 @@ resource "kubernetes_service" "postgres" {
   }
 
   spec {
+    cluster_ip = "None"    # CHANGED: make it a headless service for StatefulSet
     selector = {
       app = "postgres"
     }
@@ -146,8 +110,5 @@ resource "kubernetes_service" "postgres" {
       port        = 5432
       target_port = 5432
     }
-
-    type = "ClusterIP"
   }
 }
-#
