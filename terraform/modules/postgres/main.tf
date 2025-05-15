@@ -153,7 +153,7 @@ resource "kubernetes_service" "postgres" {
   }
 
   spec {
-    cluster_ip = "None"  # HIGHLIGHTED: Headless service for StatefulSet
+    cluster_ip = "None"  # HIGHLIGHTED: Headless service for StatefulSet 
     selector = {
       app = "postgres"
     }
