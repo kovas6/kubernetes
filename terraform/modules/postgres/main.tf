@@ -112,6 +112,7 @@ resource "kubernetes_deployment" "postgres" {
           volume_mount {
             name       = "postgres-storage"
             mount_path = "/var/lib/postgresql/data"
+            sub_path   = "postgres"
           }
 
           port {
