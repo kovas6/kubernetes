@@ -1,5 +1,4 @@
-# File: modules/postgres/main.tf
-
+# Variables
 variable "postgres_username" {
   description = "Username for PostgreSQL"
   type        = string
@@ -11,9 +10,18 @@ variable "postgres_password" {
   sensitive   = true
 }
 
+# Namespace
+resource "kubernetes_namespace" "postgres" {
+  metadata {
+    name = "postgres"
+  }
+}
+
+# Secret
 resource "kubernetes_secret" "postgres" {
   metadata {
     name = "postgres-secret"
+    namespace = kubernetes_namespace.postgres.metadata[0].name
   }
 
   data = {
@@ -24,17 +32,31 @@ resource "kubernetes_secret" "postgres" {
   type = "Opaque"
 }
 
+# Storage Class
+resource "kubernetes_storage_class" "premium_rwo_immediate" {
+  metadata {
+    name = "premium-rwo-immediate"
+  }
+
+  storage_provisioner = "pd.csi.storage.gke.io"
+  reclaim_policy        = "Delete"
+  volume_binding_mode   = "Immediate"
+  allow_volume_expansion = true
+}
+
+# StatefulSet
 resource "kubernetes_stateful_set" "postgres" {
   metadata {
     name = "postgres"
+    namespace = kubernetes_namespace.postgres.metadata[0].name
     labels = {
       app = "postgres"
     }
   }
 
   spec {
-    service_name = "postgres"      
-    replicas     = 1             
+    service_name = kubernetes_service.postgres.metadata[0].name
+    replicas     = 1
 
     selector {
       match_labels = {
@@ -89,45 +111,39 @@ resource "kubernetes_stateful_set" "postgres" {
             container_port = 5432
           }
         }
-
-        volume {
-          name = "postgres-storage"
-
-          persistent_volume_claim {
-            claim_name = kubernetes_persistent_volume_claim.postgres_pvc.metadata[0].name
-          }
-        }
       }
     }
 
-    # volume_claim_template is preferred for StatefulSet dynamic PVCs, but keeping PVC as is
-    # volume_claim_template {
-    #   metadata {
-    #     name = "postgres-storage"
-    #   }
-    #
-    #   spec {
-    #     access_modes = ["ReadWriteOnce"]
-    #
-    #     resources {
-    #       requests = {
-    #         storage = "2Gi"
-    #       }
-    #     }
-    #
-    #     storage_class_name = "premium-rwo-immediate"
-    #   }
-    # }
+    volume_claim_template {
+      metadata {
+        name      = "postgres-storage"
+        namespace = kubernetes_namespace.postgres.metadata[0].name
+      }
+
+      spec {
+        access_modes = ["ReadWriteOnce"]
+
+        resources {
+          requests = {
+            storage = "1Gi" # HIGHLIGHTED: Set initial disk size manually
+          }
+        }
+
+        storage_class_name = kubernetes_storage_class.premium_rwo_immediate.metadata[0].name
+      }
+    }
   }
 }
 
+# Service
 resource "kubernetes_service" "postgres" {
   metadata {
     name = "postgres"
+    namespace = kubernetes_namespace.postgres.metadata[0].name
   }
 
   spec {
-    cluster_ip = "None"    # CHANGED: make it a headless service for StatefulSet
+    cluster_ip = "None"  # HIGHLIGHTED: Headless service for StatefulSet
     selector = {
       app = "postgres"
     }
