@@ -1,3 +1,29 @@
+# File: modules/postgres/main.tf
+
+variable "postgres_username" {
+  description = "Username for PostgreSQL"
+  type        = string
+}
+
+variable "postgres_password" {
+  description = "Password for PostgreSQL"
+  type        = string
+  sensitive   = true
+}
+
+resource "kubernetes_secret" "postgres" {
+  metadata {
+    name = "postgres-secret"
+  }
+
+  data = {
+    username = base64encode(var.postgres_username)
+    password = base64encode(var.postgres_password)
+  }
+
+  type = "Opaque"
+}
+
 resource "kubernetes_stateful_set" "postgres" {
   metadata {
     name = "postgres"
