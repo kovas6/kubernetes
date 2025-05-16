@@ -29,10 +29,10 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-module "postgres" {
-  source = "../modules/postgres"
-
-  postgres_username = var.postgres_username
-  postgres_password = var.postgres_password
-}
+#module "postgres" {
+#  source = "../modules/postgres"
+#
+#  postgres_username = var.postgres_username
+#  postgres_password = var.postgres_password
+#}
 
