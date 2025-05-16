@@ -26,6 +26,11 @@ resource "kubernetes_secret" "postgres" {
   metadata {
     name      = "postgres-secret"
     namespace = kubernetes_namespace.postgres.metadata[0].name
+
+    # Add this annotation — it will change when the hash changes
+    annotations = {
+      creds-hash = terraform_data.postgres_credentials_hash.output
+    }
   }
 
   data = {
@@ -34,12 +39,6 @@ resource "kubernetes_secret" "postgres" {
   }
 
   type = "Opaque"
-
-  lifecycle {
-    replace_triggered_by = [
-      terraform_data.postgres_credentials_hash
-    ]
-  }
 }
 
 # Storage Class

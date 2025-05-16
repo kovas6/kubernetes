@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/gcp-key.json
+      GOOGLE_APPLICATION_CREDENTIALS: "${{ github.workspace }}/gcp-key.json"
       TF_LOG: DEBUG  # Enable Terraform debug logging
 
     steps:
@@ -20,6 +20,11 @@ jobs:
 
       - name: Write GCP credentials to file
         run: echo '${{ secrets.GCP_CREDENTIALS_JSON }}' > $GOOGLE_APPLICATION_CREDENTIALS
+
+      - name: Mask secrets
+        run: |
+          echo "::add-mask::${{ secrets.POSTGRES_USER }}"
+          echo "::add-mask::${{ secrets.POSTGRES_PASSWORD }}"
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
@@ -31,10 +36,22 @@ jobs:
           echo "TF_VAR_postgres_username=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
           echo "TF_VAR_postgres_password=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
 
+      - name: Debug Show GitHub Secrets being passed
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: "${{ github.workspace }}/gcp-key.json"
+          TF_LOG: DEBUG
+        run: |
+          echo "Username: $TF_VAR_postgres_username"
+          echo "Password: $TF_VAR_postgres_password"
+
       - name: Terraform Init
         working-directory: terraform/dev
         run: terraform init
 
+      - name: Terraform Format Check
+        working-directory: terraform/dev
+        run: terraform fmt -check
+        
       - name: Terraform Plan
         working-directory: terraform/dev
         run: terraform plan
