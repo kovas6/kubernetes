@@ -27,15 +27,16 @@ resource "kubernetes_secret" "postgres" {
     name      = "postgres-secret"
     namespace = kubernetes_namespace.postgres.metadata[0].name
 
-    # Add this annotation — it will change when the hash changes
+    # HIGHLIGHTED: Add annotation to force update on change
     annotations = {
       creds-hash = terraform_data.postgres_credentials_hash.output
     }
   }
 
+  # HIGHLIGHTED: Let provider handle base64 encoding — cleaner diffs
   data = {
-    username = base64encode(var.postgres_username)
-    password = base64encode(var.postgres_password)
+    username = var.postgres_username
+    password = var.postgres_password
   }
 
   type = "Opaque"
