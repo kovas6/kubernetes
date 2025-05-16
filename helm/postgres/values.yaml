@@ -4,6 +4,7 @@ image:
   pullPolicy: IfNotPresent
 
 service:
+  type: ClusterIP
   port: 5432
 
 serviceAccount:
