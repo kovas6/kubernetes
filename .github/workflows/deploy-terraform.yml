@@ -109,9 +109,14 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+      - name: List files
+        run: |
+          pwd
+          ls -R
+                
       - name: Deploy PostgreSQL Helm Chart
         run: |
-          helm upgrade --install postgres-release ./helm/postgres-chart \
+          helm upgrade --install postgres-release ./helm/postgres \
             --namespace postgres --create-namespace \
             --set postgresUsername=${{ secrets.POSTGRES_USER }} \
             --set postgresPassword=${{ secrets.POSTGRES_PASSWORD }} \
