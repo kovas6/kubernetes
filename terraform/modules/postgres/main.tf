@@ -42,7 +42,7 @@ resource "kubernetes_secret" "postgres" {
   type = "Opaque"
 }
 
-# Storage Class
+# Storage Class 
 resource "kubernetes_storage_class" "premium_rwo_immediate" {
   metadata {
     name = "premium-rwo-immediate"
