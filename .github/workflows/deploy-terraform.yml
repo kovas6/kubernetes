@@ -136,6 +136,6 @@ jobs:
 
       - name: Upgrade Helm chart
         run: |
-          helm upgrade --install flask-app ./charts/flask-app \
+          helm upgrade --install flask-app ./helm/flask-app \
             --namespace default \
             --namespace postgres
