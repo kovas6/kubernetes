@@ -1,0 +1,10 @@
+image:
+  repository: us-central1-docker.pkg.dev/turnkey-energy-457517-u4/flask-app-repo/flask-app
+  pullPolicy: IfNotPresent
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 5000
+
+containerPort: 5000
