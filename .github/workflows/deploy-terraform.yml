@@ -126,3 +126,9 @@ jobs:
         run: |
           helm list -n postgres
           kubectl get pods -n postgres
+
+      - name: Port-forward PostgreSQL Pod
+        run: |
+          POD_NAME=$(kubectl get pods -n postgres -l "app.kubernetes.io/name=postgres,app.kubernetes.io/instance=postgres-release" -o jsonpath="{.items[0].metadata.name}")
+          kubectl port-forward -n postgres pod/$POD_NAME 5432:5432 &
+          sleep 5
