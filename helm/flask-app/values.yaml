@@ -1,10 +1,70 @@
+# Image settings
 image:
   repository: us-central1-docker.pkg.dev/turnkey-energy-457517-u4/flask-app-repo/flask-app
   pullPolicy: IfNotPresent
   tag: latest
 
+# Container port (used in Deployment)
+containerPort: 5000
+
+# Service configuration
 service:
   type: ClusterIP
   port: 5000
 
-containerPort: 5000
+# Number of pod replicas
+replicaCount: 1
+
+# Optional: Service account
+serviceAccount:
+  create: true
+  name: ""
+
+# Optional: Image pull secrets if needed
+imagePullSecrets: []
+
+# Optional: Pod annotations
+podAnnotations: {}
+
+# Optional: Pod labels
+podLabels: {}
+
+# Optional: Security context for pod
+podSecurityContext: {}
+
+# Optional: Security context for container
+securityContext: {}
+
+# Optional: Probes
+livenessProbe: {}
+readinessProbe: {}
+
+# Optional: Resources (CPU/memory limits/requests)
+resources: {}
+
+# Optional: Volumes and volumeMounts
+volumes: []
+volumeMounts: []
+
+# Optional: Node scheduling
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Optional: Horizontal Pod Autoscaler (HPA)
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 90
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: flask-app.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []

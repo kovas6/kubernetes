@@ -7,8 +7,8 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: {{ .Values.service.port }}        # Exposed service port (e.g., 80)
+      targetPort: http                        # Must match containerPort name in deployment.yaml
       protocol: TCP
       name: http
   selector:
