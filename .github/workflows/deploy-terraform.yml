@@ -136,9 +136,24 @@ jobs:
 
       - name: Deploy Web Helm chart
         run: |
-          helm upgrade --install web ./helm/web \
-            --namespace postgres \
-            --set postgres.username=${{ secrets.POSTGRES_USER }} \
-            --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
-            --set postgres.secretName=web-postgres-secret
-            --wait
+         if helm status web --namespace postgres >/dev/null 2>&1; then
+            echo "Release exists, upgrading..."
+            helm upgrade --install web ./helm/web \
+              --namespace postgres \
+              --set postgres.username=${{ secrets.POSTGRES_USER }} \
+              --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
+              --set postgres.secretName=web-postgres-secret
+          else
+            echo "Release not found, installing..."
+            helm install web ./helm/web \
+              --namespace postgres \
+              --set postgres.username=${{ secrets.POSTGRES_USER }} \
+              --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
+              --set postgres.secretName=web-postgres-secret
+          fi
+#          helm upgrade --install web ./helm/web \
+#            --namespace postgres \
+#            --set postgres.username=${{ secrets.POSTGRES_USER }} \
+#            --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
+#            --set postgres.secretName=web-postgres-secret
+#            --wait
