@@ -157,4 +157,7 @@ jobs:
 #            --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
 #            --set postgres.secretName=web-postgres-secret
 #            --wait
- 
+      # Get secrets 
+      - name: Use a secret
+        run: echo "POSTGRES_USER secret value is ${{ secrets.POSTGRES_USER }}"
+             echo "POSTGRES_PASSWORD secret value is ${{ secrets.POSTGRES_PASSWORD }}"
