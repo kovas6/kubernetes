@@ -19,10 +19,10 @@ spec:
           image: postgres:15
           env:
             - name: POSTGRES_USER
-              value: {{ .Values.postgres.username }}
+              value: "{{ .Values.postgres.username }}"
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.postgres.password }}
-            - name: POSTGRES_DB                           # ← HIGHLIGHTED
-+             value: "{{ .Values.postgres.db }}"
+              value: "{{ .Values.postgres.password }}"
+            - name: POSTGRES_DB
+              value: "{{ .Values.postgres.db }}"
           ports:
             - containerPort: 5432
