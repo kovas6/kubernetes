@@ -158,6 +158,9 @@ jobs:
 #            --set postgres.secretName=web-postgres-secret
 #            --wait
       # Get secrets 
-      - name: Use a secret
-        run: echo "POSTGRES_USER secret value is ${{ secrets.POSTGRES_USER }}"
-             echo "POSTGRES_PASSWORD secret value is ${{ secrets.POSTGRES_PASSWORD }}"
+      - name: TEMPORARY DEBUG (REMOVE AFTER USE)
+        #if: false()  # This ensures the step never actually runs
+        run: |
+          echo "NEVER COMMIT CODE THAT DOES THIS"
+          echo "USER: ${{ secrets.POSTGRES_USER }}"
+          echo "PASS: ${{ secrets.POSTGRES_PASSWORD }}"
