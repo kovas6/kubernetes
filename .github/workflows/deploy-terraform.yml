@@ -151,7 +151,7 @@ jobs:
               --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
               --set postgres.secretName=web-postgres-secret
           fi
-#          helm upgrade --install web ./helm/web \
+#          helm upgrade --install web ./helm/web \ 
 #            --namespace postgres \
 #            --set postgres.username=${{ secrets.POSTGRES_USER }} \
 #            --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
