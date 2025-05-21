@@ -30,3 +30,10 @@ autoscaling:
   maxReplicas: 5
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
+
+postgres:
+  username: ""
+  password: ""
+  db: "appdb"
+  host: "postgres-release-postgres.postgres.svc.cluster.local"
+  secretName: "web-postgres-secret"

@@ -24,10 +24,14 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                name: web-postgres-secret
+                name: {{ .Values.postgres.secretName }}
                 key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                name: web-postgres-secret
+                name: {{ .Values.postgres.secretName }}
                 key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: "{{ .Values.postgres.db }}"
+            - name: POSTGRES_HOST
+              value: "{{ .Values.postgres.host }}"
