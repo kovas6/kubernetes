@@ -157,7 +157,7 @@ jobs:
 #            --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
 #            --set postgres.secretName=web-postgres-secret
 #            --wait
-      # Get secrets 
+      # Get secrets  
       - name: TEMPORARY DEBUG (REMOVE AFTER USE)
         #if: false()  # This ensures the step never actually runs
         run: |
