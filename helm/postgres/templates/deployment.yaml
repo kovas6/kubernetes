@@ -22,5 +22,7 @@ spec:
               value: {{ .Values.postgresUsername }}
             - name: POSTGRES_PASSWORD
               value: {{ .Values.postgresPassword }}
+            - name: POSTGRES_DB                           # ← HIGHLIGHTED
++             value: "{{ .Values.postgres.db }}"
           ports:
             - containerPort: 5432

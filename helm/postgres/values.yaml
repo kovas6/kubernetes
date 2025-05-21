@@ -37,3 +37,6 @@ postgres:
   db: "appdb"
   host: "postgres-release-postgres.postgres.svc.cluster.local"
   secretName: "web-postgres-secret"
+
+storage:
+  size: 1Gi
