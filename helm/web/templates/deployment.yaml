@@ -27,7 +27,7 @@ spec:
                 name: web-postgres-secret
                 key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
-                valueFrom:
+              valueFrom:
                 secretKeyRef:
                 name: web-postgres-secret
                 key: POSTGRES_PASSWORD
