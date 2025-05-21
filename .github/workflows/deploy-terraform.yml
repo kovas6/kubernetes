@@ -96,9 +96,9 @@ jobs:
 #          kubectl get pods -l app=postgres
 #          kubectl get svc postgres
 
-      - name: Terraform State List (Check Postgres Resource in State) 
-        run: terraform state list
-        working-directory: terraform/dev
+#      - name: Terraform State List (Check Postgres Resource in State) 
+#        run: terraform state list
+#        working-directory: terraform/dev
 
       # Deploy helm chart 
       - name: Apply Network Policy
@@ -127,15 +127,18 @@ jobs:
           helm list -n postgres
           kubectl get pods -n postgres
 
-      - name: Port-forward PostgreSQL Pod
-        run: |
-          POD_NAME=$(kubectl get pods -n postgres -l "app=postgres" -o jsonpath="{.items[0].metadata.name}")
-          echo "Forwarding port from pod: $POD_NAME"
-          kubectl port-forward -n postgres pod/$POD_NAME 5432:5432 &
-          sleep 5
+#      - name: Port-forward PostgreSQL Pod
+#        run: |
+#          POD_NAME=$(kubectl get pods -n postgres -l "app=postgres" -o jsonpath="{.items[0].metadata.name}")
+#          echo "Forwarding port from pod: $POD_NAME"
+#          kubectl port-forward -n postgres pod/$POD_NAME 5432:5432 &
+#          sleep 5
 
       - name: Deploy Web Helm chart 
         run: |
           helm upgrade --install web ./helm/web \
-            --namespace default \
-            --namespace postgres
+            --namespace postgres \
+            --set postgres.username=${{ secrets.POSTGRES_USER }} \
+            --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
+            --set postgres.secretName=web-postgres-secret
+            --wait

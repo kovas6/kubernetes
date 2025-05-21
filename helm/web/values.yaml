@@ -11,6 +11,6 @@ service:
 postgres:
   host: postgres-release-postgres.postgres.svc.cluster.local
   db: appdb
-  secretName: postgres-secret
-  username: ""
-  password: ""
+  username: YOUR_POSTGRES_USER
+  password: YOUR_POSTGRES_PASSWORD
+  secretName: web-postgres-secret
