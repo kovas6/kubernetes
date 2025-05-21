@@ -25,12 +25,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.postgres.secretName }}
-                  key: username
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.postgres.secretName }}
-                  key: password
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: "{{ .Values.postgres.db }}"
             - name: POSTGRES_HOST
