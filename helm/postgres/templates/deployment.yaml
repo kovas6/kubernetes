@@ -19,9 +19,9 @@ spec:
           image: postgres:15
           env:
             - name: POSTGRES_USER
-              value: {{ .Values.postgresUsername }}
+              value: {{ .Values.postgres.username }}
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.postgresPassword }}
+              value: {{ .Values.postgres.password }}
             - name: POSTGRES_DB                           # ← HIGHLIGHTED
 +             value: "{{ .Values.postgres.db }}"
           ports:

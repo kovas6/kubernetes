@@ -118,8 +118,8 @@ jobs:
         run: |
           helm upgrade --install postgres-release ./helm/postgres \
             --namespace postgres --create-namespace \
-            --set postgresUsername=${{ secrets.POSTGRES_USER }} \
-            --set postgresPassword=${{ secrets.POSTGRES_PASSWORD }} \
+            --set postgres.username=${{ secrets.POSTGRES_USER }} \
+            --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
             --wait
 
       - name: Verify Helm Release
