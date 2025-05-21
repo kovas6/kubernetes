@@ -1,0 +1,14 @@
+image:
+  repository: gcr.io/turnkey-energy-457517-u4/web
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 443
+  targetPort: 5000
+
+postgres:
+  host: postgres-release-postgres.postgres.svc.cluster.local
+  db: appdb
+  secretName: postgres-secret
