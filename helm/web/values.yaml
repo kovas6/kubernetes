@@ -12,3 +12,5 @@ postgres:
   host: postgres-release-postgres.postgres.svc.cluster.local
   db: appdb
   secretName: postgres-secret
+  username: ""
+  password: ""
