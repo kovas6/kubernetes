@@ -9,8 +9,6 @@ service:
   targetPort: 5000
 
 postgres:
-  host: postgres-release-postgres.postgres.svc.cluster.local
-  db: appdb
-  username: YOUR_POSTGRES_USER
-  password: YOUR_POSTGRES_PASSWORD
   secretName: web-postgres-secret
+  usernameKey: POSTGRES_USER
+  passwordKey: POSTGRES_PASSWORD

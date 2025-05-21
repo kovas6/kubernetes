@@ -127,6 +127,10 @@ jobs:
           helm list -n postgres
           kubectl get pods -n postgres
 
+      - name: Apply Web PostgreSQL Secret
+        run: |
+          kubectl apply -f helm/web/templates/web-postgres-secret.yaml --namespace postgres
+
 #      - name: Port-forward PostgreSQL Pod
 #        run: |
 #          POD_NAME=$(kubectl get pods -n postgres -l "app=postgres" -o jsonpath="{.items[0].metadata.name}")
