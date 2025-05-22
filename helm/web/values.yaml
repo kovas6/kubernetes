@@ -12,6 +12,9 @@ postgres:
   secretName: web-postgres-secret
   usernameKey: POSTGRES_USER
   passwordKey: POSTGRES_PASSWORD
+  db: appdb
+  host: postgres-release-postgres.postgres.svc.cluster.local
+
 
 ingress:
   enabled: true
