@@ -136,10 +136,13 @@ jobs:
 
       - name: Deploy Web Helm chart
         run: |
-         if helm status web --namespace postgres >/dev/null 2>&1; then
+          if helm status web --namespace postgres >/dev/null 2>&1; then
             echo "Release exists, upgrading..."
             helm upgrade --install web ./helm/web \
               --namespace postgres \
+              --set image.repository=gcr.io/turnkey-energy-457517-u4/web \
+              --set image.tag=latest \
+              --set image.pullPolicy=Always \
               --set postgres.username=${{ secrets.POSTGRES_USER }} \
               --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
               --set postgres.secretName=web-postgres-secret
@@ -147,10 +150,14 @@ jobs:
             echo "Release not found, installing..."
             helm install web ./helm/web \
               --namespace postgres \
+              --set image.repository=gcr.io/turnkey-energy-457517-u4/web \
+              --set image.tag=latest \
+              --set image.pullPolicy=Always \
               --set postgres.username=${{ secrets.POSTGRES_USER }} \
               --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
               --set postgres.secretName=web-postgres-secret
           fi
+
 #          helm upgrade --install web ./helm/web \ 
 #            --namespace postgres \
 #            --set postgres.username=${{ secrets.POSTGRES_USER }} \
