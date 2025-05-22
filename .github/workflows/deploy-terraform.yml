@@ -127,6 +127,9 @@ jobs:
           helm list -n postgres
           kubectl get pods -n postgres
 
+      - name: Apply GCP Managed Certificate 
+        run: kubectl apply -f k8s/managed-cert.yaml
+
 #      - name: Port-forward PostgreSQL Pod
 #        run: | 
 #          POD_NAME=$(kubectl get pods -n postgres -l "app=postgres" -o jsonpath="{.items[0].metadata.name}")
@@ -145,7 +148,8 @@ jobs:
               --set image.pullPolicy=Always \
               --set postgres.username=${{ secrets.POSTGRES_USER }} \
               --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
-              --set postgres.secretName=web-postgres-secret
+              --set postgres.secretName=web-postgres-secret \
+              --set ingress.enabled=true
           else
             echo "Release not found, installing..."
             helm install web ./helm/web \
@@ -155,7 +159,8 @@ jobs:
               --set image.pullPolicy=Always \
               --set postgres.username=${{ secrets.POSTGRES_USER }} \
               --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
-              --set postgres.secretName=web-postgres-secret
+              --set postgres.secretName=web-postgres-secret \
+              --set ingress.enabled=true
           fi
 
 #          helm upgrade --install web ./helm/web \ 

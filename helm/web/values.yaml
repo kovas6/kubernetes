@@ -12,3 +12,8 @@ postgres:
   secretName: web-postgres-secret
   usernameKey: POSTGRES_USER
   passwordKey: POSTGRES_PASSWORD
+
+ingress:
+  enabled: true
+  host: aurimas.lt
+  managedCertificate: web-cert
