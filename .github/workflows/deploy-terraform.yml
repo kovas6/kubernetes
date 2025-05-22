@@ -157,6 +157,10 @@ jobs:
 #            --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
 #            --set postgres.secretName=web-postgres-secret
 #            --wait
+
+      - name: Restart web deployment
+        run: kubectl rollout restart deployment web -n postgres
+
       # Get secrets  
       - name: TEMPORARY DEBUG (REMOVE AFTER USE)
         #if: false()  # This ensures the step never actually runs
