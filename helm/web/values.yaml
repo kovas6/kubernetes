@@ -17,7 +17,6 @@ postgres:
   db: appdb
   host: postgres-release-postgres.postgres.svc
 
-
 ingress:
   enabled: true
   host: aurimas.lt
