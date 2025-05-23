@@ -1,4 +1,4 @@
-replicaCount: 3 
+replicaCount: 2
 
 image:
   repository: gcr.io/turnkey-energy-457517-u4/web
