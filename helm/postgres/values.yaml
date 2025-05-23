@@ -38,5 +38,17 @@ postgres:
   host: "postgres-release-postgres.postgres.svc.cluster.local"
   secretName: "web-postgres-secret"
 
+  persistence:
+    enabled: true
+    existingClaim: postgres-pvc
+
+  volumeMounts:
+    - name: postgres-storage
+      mountPath: /var/lib/postgresql/data/pgdata
+
+  env:
+    - name: PGDATA
+      value: /var/lib/postgresql/data/pgdata
+
 storage:
   size: 1Gi
