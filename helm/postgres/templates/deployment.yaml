@@ -24,5 +24,16 @@ spec:
               value: "{{ .Values.postgres.password }}"
             - name: POSTGRES_DB
               value: "{{ .Values.postgres.db }}"
+            - name: PGDATA
+              value: "{{ .Values.postgres.env[0].value }}"
           ports:
             - containerPort: 5432
+          volumeMounts:
+            # Mount the persistent volume to a subpath
+            - name: postgres-storage
+              mountPath: "{{ .Values.postgres.volumeMounts[0].mountPath }}"
+      volumes:
+        # Link the volume to the specified PVC
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: "{{ .Values.postgres.persistence.existingClaim }}"
