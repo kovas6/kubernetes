@@ -42,6 +42,9 @@ postgres:
     enabled: true
     existingClaim: postgres-pvc
 
+  pgdata: /var/lib/postgresql/data/pgdata  
+  mountPath: /var/lib/postgresql/data/pgdata
+
   volumeMounts:
     - name: postgres-storage
       mountPath: /var/lib/postgresql/data/pgdata
