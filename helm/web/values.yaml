@@ -17,6 +17,13 @@ postgres:
   db: appdb
   host: postgres-release-postgres.postgres.svc
 
+  pgdata: /var/lib/postgresql/data/pgdata  # PGDATA points to a subfolder
+  mountPath: /var/lib/postgresql/data      # Volume mounts to the parent
+
+  persistence:
+    enabled: true
+    existingClaim: postgres-pvc
+
 ingress:
   enabled: true
   host: aurimas.lt
