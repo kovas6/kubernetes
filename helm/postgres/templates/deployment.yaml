@@ -29,7 +29,6 @@ spec:
           ports:
             - containerPort: 5432
           volumeMounts:
-            # Mount the persistent volume to a subpath
             - name: postgres-storage
               mountPath: "{{ .Values.postgres.mountPath }}"
       volumes:

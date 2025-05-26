@@ -37,21 +37,11 @@ postgres:
   db: "appdb"
   host: "postgres-release-postgres.postgres.svc.cluster.local"
   secretName: "web-postgres-secret"
-
+  pgdata: /var/lib/postgresql/data/pgdata  
+  mountPath: /var/lib/postgresql/data/pgdata
   persistence:
     enabled: true
     existingClaim: postgres-pvc
-
-  pgdata: /var/lib/postgresql/data/pgdata  
-  mountPath: /var/lib/postgresql/data/pgdata
-
-  volumeMounts:
-    - name: postgres-storage
-      mountPath: /var/lib/postgresql/data/pgdata
-
-  env:
-    - name: PGDATA
-      value: /var/lib/postgresql/data/pgdata
 
 storage:
   size: 1Gi
