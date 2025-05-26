@@ -30,7 +30,8 @@ spec:
             - containerPort: 5432
           volumeMounts:
             - name: postgres-storage
-              mountPath: "{{ .Values.postgres.mountPath }}"
+              mountPath: /var/lib/postgresql/data
+              subPath: pgdata
       volumes:
         # Link the volume to the specified PVC
         - name: postgres-storage
