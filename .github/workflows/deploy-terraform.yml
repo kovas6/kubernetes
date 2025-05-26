@@ -121,11 +121,15 @@ jobs:
         run: |
           pwd
           ls -R
-                
+
+      - name: Ensure postgres namespace exists
+        run: |
+          kubectl get ns postgres || kubectl create ns postgres
+
       - name: Deploy PostgreSQL Helm Chart
         run: |
           helm upgrade --install postgres-release ./helm/postgres \
-            --namespace postgres --create-namespace \
+            --namespace postgres \
             --set postgres.username=${{ secrets.POSTGRES_USER }} \
             --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
             --wait
