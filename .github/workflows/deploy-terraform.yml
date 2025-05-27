@@ -92,7 +92,7 @@ jobs:
           gcloud container clusters resize ${{ env.cluster_name }} \
             --zone ${{ env.zone }} \
             --node-pool terraform-20250511174607273700000001 \
-            --num-nodes=3 \
+            --num-nodes=4 \
             --quiet
 
       - name: Apply Network Policy
