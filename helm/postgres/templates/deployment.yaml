@@ -7,6 +7,9 @@ metadata:
 spec:
   serviceName: "{{ .Release.Name }}-postgres"
   replicas: 1
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
   selector:
     matchLabels:
       app: postgres
