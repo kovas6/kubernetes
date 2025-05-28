@@ -41,7 +41,12 @@ postgres:
   mountPath: /var/lib/postgresql/data/pgdata
   persistence:
     enabled: true
-    existingClaim: postgres-pvc
 
-storage:
-  size: 1Gi
+volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi

@@ -5,6 +5,7 @@ metadata:
   labels:
     app: postgres
 spec:
+  serviceName: "{{ .Release.Name }}-postgres"
   replicas: 1
   selector:
     matchLabels:
@@ -14,28 +15,34 @@ spec:
       labels:
         app: postgres
     spec:
-      securityContext:
-       fsGroup: 999 
       containers:
         - name: postgres
-          image: postgres:15
-          env:
-            - name: POSTGRES_USER
-              value: "{{ .Values.postgres.username }}"
-            - name: POSTGRES_PASSWORD
-              value: "{{ .Values.postgres.password }}"
-            - name: POSTGRES_DB
-              value: "{{ .Values.postgres.db }}"
-            - name: PGDATA
-              value: "{{ .Values.postgres.pgdata }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.db }}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgres.secretName }}
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgres.secretName }}
+                  key: password
           volumeMounts:
-            - name: postgres-storage
-              mountPath: /var/lib/postgresql/data
-              subPath: pgdata
-      volumes:
-        # Link the volume to the specified PVC
-        - name: postgres-storage
-          persistentVolumeClaim:
-            claimName: "{{ .Values.postgres.persistence.existingClaim }}"
+            - name: data
+              mountPath: {{ .Values.postgres.mountPath }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
