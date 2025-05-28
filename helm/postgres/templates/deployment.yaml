@@ -42,7 +42,7 @@ spec:
     - metadata:
         name: data
       spec:
-        accessModes: ["ReadWriteOnce"]
+        accessModes: {{ .Values.storage.accessModes | toJson }}
         resources:
           requests:
-            storage: 1Gi
+            storage: {{ .Values.storage.size }}

@@ -37,16 +37,12 @@ postgres:
   db: "appdb"
   host: "postgres-release-postgres.postgres.svc.cluster.local"
   secretName: "web-postgres-secret"
-  pgdata: /var/lib/postgresql/data/pgdata  
+  pgdata: /var/lib/postgresql/data/pgdata
   mountPath: /var/lib/postgresql/data/pgdata
   persistence:
     enabled: true
 
-volumeClaimTemplates:
-  - metadata:
-      name: data
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 1Gi
+storage:
+  size: 1Gi
+  accessModes:
+    - ReadWriteOnce
