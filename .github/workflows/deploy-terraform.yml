@@ -101,7 +101,7 @@ jobs:
           
       - name: Deploy Namespace
         run: |
-          kubectl apply -f kubernetes/k8s/namespace.yaml
+          kubectl apply -f qk8s/namespace.yaml
 
 #      - name: Verify PostgreSQL Deployment
 #        run: |    
