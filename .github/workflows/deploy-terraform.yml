@@ -98,6 +98,10 @@ jobs:
       - name: Apply Network Policy
         run: |
           kubectl apply -f k8s/network-policy.yaml
+          
+      - name: Deploy Namespace
+        run: |
+          kubectl apply -f kubernetes/k8s/namespace.yaml
 
 #      - name: Verify PostgreSQL Deployment
 #        run: |    
