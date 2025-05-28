@@ -87,13 +87,13 @@ jobs:
             --zone ${{ env.zone }} \
             --project ${{ env.project_id }}
 
-      - name: Resize GKE Node Pool (ensure enough memory for kube-dns)
-        run: |
-          gcloud container clusters resize ${{ env.cluster_name }} \
-            --zone ${{ env.zone }} \
-            --node-pool terraform-20250511174607273700000001 \
-            --num-nodes=4 \
-            --quiet
+#      - name: Resize GKE Node Pool (ensure enough memory for kube-dns)
+#        run: |
+#          gcloud container clusters resize ${{ env.cluster_name }} \
+#            --zone ${{ env.zone }} \
+#            --node-pool terraform-20250511174607273700000001 \
+#            --num-nodes=4 \
+#            --quiet
 
       - name: Apply Network Policy
         run: |
