@@ -124,7 +124,7 @@ jobs:
 
       - name: Deploy Namespace Helm Chart
         run: |
-          helm upgrade --install namespace-release ./helm/postgres/templates/namespace \
+          helm upgrade --install namespace-release ./helm/namespace \
             --namespace namespace-bootstrap --create-namespace --wait
 
       - name: Deploy PostgreSQL Helm Chart
