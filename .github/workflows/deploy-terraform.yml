@@ -98,10 +98,6 @@ jobs:
       - name: Apply Network Policy
         run: |
           kubectl apply -f k8s/network-policy.yaml
-          
-      - name: Deploy Namespace
-        run: |
-          kubectl apply -f k8s/namespace.yaml
 
 #      - name: Verify PostgreSQL Deployment
 #        run: |    
@@ -126,9 +122,10 @@ jobs:
           pwd
           ls -R
 
-      - name: Ensure postgres namespace exists
+      - name: Deploy Namespace Helm Chart
         run: |
-          kubectl get ns postgres || kubectl create ns postgres
+          helm upgrade --install namespace-release ./helm/namespace \
+            --namespace namespace-bootstrap --create-namespace --wait
 
       - name: Deploy PostgreSQL Helm Chart
         run: |
@@ -137,11 +134,6 @@ jobs:
             --set postgres.username=${{ secrets.POSTGRES_USER }} \
             --set postgres.password=${{ secrets.POSTGRES_PASSWORD }} \
             --wait
-
-      - name: Verify Helm Release
-        run: |
-          helm list -n postgres
-          kubectl get pods -n postgres
 
       - name: Apply GCP Managed Certificate 
         run: kubectl apply -f k8s/managed-cert.yaml
