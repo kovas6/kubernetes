@@ -124,8 +124,10 @@ jobs:
 
       - name: Deploy Namespace Helm Chart
         run: |
-          helm upgrade --install namespace-release ./helm/namespace \
-            --namespace namespace-bootstrap --create-namespace --wait
+          NS=$(yq e '.namespace' helm/namespace/values.yaml)
+          helm upgrade --install postgres-release ./helm/namespace \
+            --namespace "$NS" --create-namespace --wait
+
 
       - name: Deploy PostgreSQL Helm Chart
         run: |
